@@ -13,9 +13,18 @@
   }
 
   #map {
-      height: 100%;
+      height: calc(100% - 100px);
       border-radius: 20px;
   }
+
+  .filters {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    padding: 32px;
+    background-color: #e6e6e6;
+    margin: 0 0 32px;
+}
 
   .controls {
       display: grid;

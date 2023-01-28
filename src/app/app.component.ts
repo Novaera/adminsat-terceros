@@ -1,6 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { Firestore, collection, query, onSnapshot, orderBy, QueryDocumentSnapshot, DocumentData, collectionData } from '@angular/fire/firestore';
-import { FormBuilder } from '@angular/forms';
+import { Firestore, collection, query, onSnapshot, orderBy, QueryDocumentSnapshot, DocumentData, collectionData, where } from '@angular/fire/firestore';
+import { FormBuilder, UntypedFormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { LeafletMap } from '@sersol/ngx-leaflet';
 import { circleMarker, geoJSON, LayerGroup } from 'leaflet';
@@ -17,18 +17,17 @@ export class AppComponent implements AfterViewInit {
   item$: Observable<any[]> | undefined;
   private leafletInstance!: LeafletMap;
   private layerGroup = new LayerGroup();
+  private data!: any[];
   modelForm = this._fb.group({
-
+    placa: [],
+    dni: [],
+    date: []
   });
 
-  constructor(private _fs: Firestore, private _fb: FormBuilder) {
+  constructor(private _fs: Firestore, private _fb: UntypedFormBuilder) {
   }
 
   ngAfterViewInit() {
-    /* const collectionn = collection(this._fs, 'adminsat');
-    this.item$ = collectionData(collectionn);
-
-    this.item$.pipe().subscribe(x => console.log(x)); */
 
     this.getAll();
 
@@ -42,6 +41,10 @@ export class AppComponent implements AfterViewInit {
 
   }
 
+  applyFilters() {
+    this.updateMap(this.data);
+  }
+
   updateMap(docs: DocumentData[]) {
 
     this.layerGroup.clearLayers();
@@ -51,8 +54,14 @@ export class AppComponent implements AfterViewInit {
       features: [] as any[]
     }
 
-    docs.forEach(x => {
-      // console.log(x);
+    docs
+    .filter(x => this.modelForm.value.placa ? x['placa'].toUpperCase() === this.modelForm.value.placa.toUpperCase() : x)
+    .filter(x => this.modelForm.value.dni ? x['dni'].toUpperCase() === this.modelForm.value.dni.toUpperCase() : x)
+    .filter(x => {
+
+      return this.modelForm.value.date ? x['date'] >= this.modelForm.value.date : x;
+    })
+    .forEach(x => {
 
       const data = x;
 
@@ -60,8 +69,12 @@ export class AppComponent implements AfterViewInit {
         type: 'Feature',
         properties: {
           bgColor: data['gps'] === 1 ? 'green' : 'red',
-          tooltip: `<div>Bateria: <strong>${data['battery']}</strong></div>
-                    <div>Fecha: <strong>${formatDate(new Date(data['time_millis']), 'medium', 'en')}</strong></div>`
+          tooltip: `
+            <div>Fecha: <strong>${formatDate(new Date(data['time_millis']), 'medium', 'en')}</strong></div>
+            <div>Bateria: <strong>${data['battery']}</strong></div>
+            <div>Placa: <strong>${data['placa']}</strong></div>
+            <div>DNI: <strong>${data['dni']}</strong></div>
+          `
         },
         geometry: {
           "type": "Point",
@@ -90,6 +103,10 @@ export class AppComponent implements AfterViewInit {
 
     this.layerGroup.addLayer(geojson);
 
+    const last = FeatureCollection.features[0].geometry.coordinates;
+
+    this.leafletInstance.map.flyTo([last[1], last[0]], 18);
+
     // this.leafletInstance.map.fitBounds(geojson.getBounds());
   }
 
@@ -98,10 +115,15 @@ export class AppComponent implements AfterViewInit {
     collectionData(
       query(
         collection(this._fs, "adminsat"),
-        orderBy('time_millis', 'desc')
+        orderBy('time_millis', 'desc'),
       )
     )
-    .subscribe(x => this.updateMap(x));
+    .subscribe(x => {
+      console.log(x);
+
+      this.data = x;
+      this.updateMap(x);
+    });
   }
 
 

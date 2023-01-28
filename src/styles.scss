@@ -1,0 +1,140 @@
+// Leaflet
+@import "~leaflet/dist/leaflet.css";
+@import "~leaflet.markercluster/dist/MarkerCluster.css";
+@import "~leaflet.markercluster/dist/MarkerCluster.Default.css";
+
+// NGX-UI
+@import '@sersol/ngx/styles/typography.scss';
+@import '@sersol/ngx/styles/layout.scss';
+@import '@sersol/ngx/styles/loader.scss';
+@import '@sersol/ngx/styles/select.scss';
+@import '@sersol/ngx/styles/address.scss';
+@import '@sersol/ngx/styles/date.scss';
+@import '@sersol/ngx/styles/snackbar.scss';
+@import '@sersol/ngx/styles/form.scss';
+@import '@sersol/ngx/styles/filter.scss';
+@import '@sersol/ngx/styles/pin.scss';
+@import '@sersol/ngx/styles/button.scss';
+@import '@sersol/ngx/styles/default-theme.scss';
+
+
+/* You can add global styles to this file, and also import other style files */
+:root {
+  --step-active-color: dodgerblue;
+  --font-secondary: 'Poppins', sans-serif;
+  --font-alternative: 'Hurme Geometric Sans 1', sans-serif;
+  --scrollbar-thumb-color-bg: #555555;
+}
+
+html,
+body {
+  position: fixed;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-weight: 400;
+}
+
+.test-site {
+  background: linear-gradient(to bottom, #a80024 0, #ce000d 100%);
+  color: white;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  max-width: 200px;
+  width: 150px;
+  text-align: center;
+  position: fixed;
+  transform: rotate(45deg);
+  right: -36px;
+  top: 28px;
+  z-index: 2;
+  padding: 4px 23px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+html:not(.wf-materialicons-n4-active) {
+  .mat-icon,
+  .material-icons {
+      visibility: hidden !important;
+  }
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb-color-bg);
+
+  &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+      background: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+      background-color: var(--scrollbar-thumb-color-bg);
+      border-radius: 20px;
+  }
+}
+
+:root {
+  --font-color-1: rgb(10, 10, 10); // #3e3e3e;
+  --font-color-2: dimgray;
+  --blue-primary-font: #103e6e;
+  --font-color-route: #152c5b;
+
+  --sidebar-icon-color: black;
+  --company-setting-item-controls-bg: #f5f5f5;
+
+  --bg-0dp: #f1f6fc;
+  --crud-card-bg: #f8f9f8;
+  --crud-card-border: transparent;
+  --font-primary: 'Segoe UI', sans-serif;
+  --font-secondary: 'Poppins', sans-serif;
+  --font-alternative: 'Hurme Geometric Sans 1', sans-serif;
+
+  --input-focus-color: var(--secondary-color);
+  --select-base-color: var(--secondary-color);
+  --crud-separator-row-color: rgba(0, 0, 0, 0.04);
+
+  --bg-order-section: #f3f3f3;
+
+  --billing-card-bg: #f8f8f8;
+
+  --bttn-group-bg: #f1f1f1;
+
+  --scrollbar-thumb-color-bg: #555555;
+
+  --dash-counter-bg: #fbfbfb;
+  --dash-counter-font-color: lighten(black, 30%);
+
+  --domain-font-color: #6f6f6f;
+
+  --online-channel-bg: #ececec;
+}
+
+body {
+  background-color: var(--bg-0dp);
+  font-family: var(--font-primary);
+
+  &.scheme-dark {
+      --crud-card-bg: #303030;
+      --crud-separator-row-color: rgba(255, 255, 255, 0.05);
+      --bg-order-section: #3d3d3d;
+      --billing-card-bg: #3b3b3b;
+      --bttn-group-bg: #3b3b3b;
+      --dash-counter-bg: #3b3b3b;
+      --dash-counter-font-color: darken(white, 30%);
+      --domain-font-color: #cccccc;
+      --company-setting-item-controls-bg: #4a4a4a;
+      --sidebar-icon-color: #adadad;
+      --input-file-item-bg: #434343;
+      --input-file-item-delete-bg: #bbbbbb;
+      --input-file-item-delete-color: #5a5a5a;
+  }
+}

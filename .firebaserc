@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "adminsat-terceros": {
+      "hosting": {
+        "adminsat-terceros": [
+          "adminsat-terceros"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "adminsat-terceros"
+  }
+}

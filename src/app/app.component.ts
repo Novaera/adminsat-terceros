@@ -61,14 +61,14 @@ export class AppComponent implements AfterViewInit {
 
       return this.modelForm.value.date ? x['date'] >= this.modelForm.value.date : x;
     })
-    .forEach(x => {
+    .forEach((x, i) => {
 
       const data = x;
 
       FeatureCollection.features.push({
         type: 'Feature',
         properties: {
-          bgColor: data['gps'] === 1 ? 'green' : 'red',
+          bgColor: i == 0 ? 'orange' : (data['gps'] === 1 ? 'green' : 'red'),
           tooltip: `
             <div>Fecha: <strong>${formatDate(new Date(data['time_millis']), 'medium', 'en')}</strong></div>
             <div>Bateria: <strong>${data['battery']}</strong></div>

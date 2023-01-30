@@ -44,6 +44,10 @@
       }
   }
 
+  ser-date {
+    min-width: 170px;
+  }
+
   ::ng-deep {
       .leaflet-pane {
           z-index: 0;

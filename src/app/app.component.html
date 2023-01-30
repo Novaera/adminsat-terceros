@@ -1,16 +1,24 @@
 
 <div class="filters" [formGroup]="modelForm">
+
   <ser-form-element>
     <label>Placa: </label>
     <input type="text" serControl formControlName="placa">
   </ser-form-element>
+
   <ser-form-element>
     <label>DNI: </label>
     <input type="text" serControl formControlName="dni">
   </ser-form-element>
+
   <ser-form-element>
     <label>Fecha inicio: </label>
-    <ser-date serControl formControlName="date"></ser-date>
+    <ser-date serControl formControlName="start" time></ser-date>
+  </ser-form-element>
+
+  <ser-form-element>
+    <label>Fecha fin: </label>
+    <ser-date serControl formControlName="end" time></ser-date>
   </ser-form-element>
 
   <button type="button" (click)="applyFilters()">Aplicar</button>

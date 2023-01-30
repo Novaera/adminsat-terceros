@@ -21,7 +21,8 @@ export class AppComponent implements AfterViewInit {
   modelForm = this._fb.group({
     placa: [],
     dni: [],
-    date: []
+    start: [],
+    end: [],
   });
 
   constructor(private _fs: Firestore, private _fb: UntypedFormBuilder) {
@@ -57,10 +58,12 @@ export class AppComponent implements AfterViewInit {
     docs
     .filter(x => this.modelForm.value.placa ? x['placa'].toUpperCase() === this.modelForm.value.placa.toUpperCase() : x)
     .filter(x => this.modelForm.value.dni ? x['dni'].toUpperCase() === this.modelForm.value.dni.toUpperCase() : x)
-    .filter(x => {
-
-      return this.modelForm.value.date ? x['date'] >= this.modelForm.value.date : x;
+    .map(x => {
+      x['date'] = new Date(x['time_millis']);
+      return x
     })
+    .filter(x => this.modelForm.value.start ? x['date'] >= this.modelForm.value.start : x)
+    .filter(x => this.modelForm.value.end ? x['date'] <= this.modelForm.value.end : x)
     .forEach((x, i) => {
 
       const data = x;
@@ -70,7 +73,7 @@ export class AppComponent implements AfterViewInit {
         properties: {
           bgColor: i == 0 ? 'orange' : (data['gps'] === 1 ? 'green' : 'red'),
           tooltip: `
-            <div>Fecha: <strong>${formatDate(new Date(data['time_millis']), 'medium', 'en')}</strong></div>
+            <div>Fecha: <strong>${formatDate(data['date'], 'medium', 'en')}</strong></div>
             <div>Bateria: <strong>${data['battery']}</strong></div>
             <div>Placa: <strong>${data['placa']}</strong></div>
             <div>DNI: <strong>${data['dni']}</strong></div>
@@ -101,11 +104,11 @@ export class AppComponent implements AfterViewInit {
       }
     });
 
-    this.layerGroup.addLayer(geojson);
-
-    const last = FeatureCollection.features[0].geometry.coordinates;
-
-    this.leafletInstance.map.flyTo([last[1], last[0]], 18);
+    if (FeatureCollection.features.length > 0) {
+      this.layerGroup.addLayer(geojson);
+      const last = FeatureCollection.features[0].geometry.coordinates;
+      this.leafletInstance.map.flyTo([last[1], last[0]], 18);
+    }
 
     // this.leafletInstance.map.fitBounds(geojson.getBounds());
   }
@@ -119,8 +122,6 @@ export class AppComponent implements AfterViewInit {
       )
     )
     .subscribe(x => {
-      console.log(x);
-
       this.data = x;
       this.updateMap(x);
     });
